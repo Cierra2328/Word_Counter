@@ -12,8 +12,12 @@ export default function Home() {
     const input = document.getElementById("input") as HTMLTextAreaElement;
     var value = event.target.value;
     setText(value);
-    const wordList = value.split(/\s+/).filter(Boolean);
-    var words = wordList.length;
+    const cleanedText = value.replace(/[^\w\s]|_/g, '').replace(/\s+/g, ' ').trim();
+    const wordList = cleanedText
+      .split(/\s+/)
+      .filter(word => isNaN(Number(word)));
+    const words = wordList.length;
+    
     setWordCount(words);
   }
 
@@ -28,7 +32,7 @@ export default function Home() {
       <div className="counter">
       <h3>Word Counter</h3>
       <p>Enter some text into the box and get a word count</p>
-      <textarea className="textbox" id="input" value={text} onChange={getCount}></textarea>
+      <textarea className="textbox" id="input" value={text} onChange={getCount} placeholder="Enter text here..."></textarea>
       <br></br>      
       <button onClick={erase}>Clear Text</button>
       <p>Your word count is: {wordCount}</p>
